@@ -1,0 +1,3 @@
+# Contents
+Within this folder:
+    - miscallaneus files not related to the program logic or datasets

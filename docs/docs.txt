@@ -1,0 +1,4 @@
+# Contents
+Within this folder
+    - Definition.pdf: määrittelydokumentti
+    - Weekly_reports.pdf: required weekly reflections

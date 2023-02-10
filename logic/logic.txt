@@ -1,0 +1,4 @@
+#Contents
+Within this folder:
+    - lalgebra.py: datastructures for vectors, matrices
+    - test_lalgebra.py: tests for lalgebra.py
