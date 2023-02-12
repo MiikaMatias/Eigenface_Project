@@ -92,20 +92,30 @@ def covariance_matrix(m):
 
     # formula and meaning of covariance are required to
     # understand this code
+
+    n = len(m.T)
     
-    n = len(m)
-    
+    if isinstance(m[0][0],(int,float)):
+        sumstarter = 0
+    elif isinstance(m[0][0], rgb):
+        sumstarter = rgb(0,0,0)
+    else:
+        raise TypeError(f'Invalid type for vectors: {m[0]}')
+
     ret = matrix()
     for i in range(len(m)):
         current_vec = vector()
-        for j in range(len(m.T)):
-            mean_1 = sum(list(m[i]))/len(m[i])
+        for j in range(len(m)):
+            summed_1 = sum(list(m[i]),start=sumstarter)
+            mean_1 = summed_1/len(m[i])
             vec_1 = list(m[i] - mean_1)
 
-            mean_2 = sum(list(m[j]))/len(m[j])
+            summed_2 = sum(list(m[j]),start=sumstarter)
+            mean_2 = summed_2/len(m[j])
             vec_2 = list(m[j] - mean_2)
 
-            current_vec.append(sum(list(map(lambda x: x[0] * x[1], list(zip(vec_1,vec_2)))))/(n-1))
+            current_vec.append(sum(list(map(lambda x: x[0] * x[1], 
+                                   list(zip(vec_1,vec_2)))),start=sumstarter)/(n-1))
 
         ret.append(current_vec)
     return ret
@@ -121,7 +131,7 @@ class rgb:
         self.val = (r, g, b)
 
     def __add__(self, __o):
-        if isinstance(__o, rgb) or isinstance(__o, tuple):
+        if isinstance(__o, rgb):
             self.val = (self.val[0] + __o.val[0],
                         self.val[1] + __o.val[1],
                         self.val[2] + __o.val[2])
@@ -134,7 +144,7 @@ class rgb:
         return self
 
     def __sub__(self, __o):
-        if isinstance(__o, rgb) or isinstance(__o, tuple):
+        if isinstance(__o, rgb):
             self.val = (self.val[0] - __o.val[0],
                         self.val[1] - __o.val[1],
                         self.val[2] - __o.val[2])
@@ -146,7 +156,7 @@ class rgb:
         return self
 
     def __mul__(self, __o):
-        if isinstance(__o, rgb) or isinstance(__o, tuple):
+        if isinstance(__o, rgb):
             self.val = (self.val[0] * __o.val[0],
                         self.val[1] * __o.val[1],
                         self.val[2] * __o.val[2])
@@ -158,7 +168,7 @@ class rgb:
         return self
 
     def __truediv__(self, __o):
-        if isinstance(__o, rgb) or isinstance(__o, tuple):
+        if isinstance(__o, rgb):
             self.val = (self.val[0] / __o.val[0],
                         self.val[1] / __o.val[1],
                         self.val[2] / __o.val[2])
@@ -249,7 +259,7 @@ class vector:
             elements of type {type(element)}""")
 
     def __add__(self, __o):
-        if isinstance(__o, (int, float)):
+        if isinstance(__o, (int, float,rgb)):
             return list(map(lambda x: x+__o, self.values))
         elif isinstance(__o, vector):
             return list(map(lambda x: x[0]+x[1],
@@ -259,7 +269,7 @@ class vector:
             type {type(__o)}""")
 
     def __sub__(self, __o):
-        if isinstance(__o, (int, float)):
+        if isinstance(__o, (int, float,rgb)):
             return list(map(lambda x: x-__o, self.values))
         elif isinstance(__o, vector):
             return list(map(lambda x: x[0]-x[1],
@@ -359,10 +369,9 @@ class matrix:
 
 
 if __name__ == "__main__":
-    v1 = vector(1,2,3)
-    v2 = vector(1,3,3)
-    v3 = vector(2,2,3)
+    v1 = vector(1,2,3,2)
+    v2 = vector(2,2,1,1)
+    v3 = vector(1,2,1,3)
     m1 = matrix(v1,v2,v3)
     
-    covec = covariance_matrix(m1)
-    print(covec)
+    print(covariance_matrix(m1))

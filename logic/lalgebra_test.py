@@ -141,11 +141,26 @@ class TestCalc(unittest.TestCase):
         # repr
         self.assertEqual(str(m1), m1.__str__())
 
-        # covariances
-        correct_cov = np.cov(np.array([[1,2,3],[1,3,3],[2,2,3]]))
-        test_cov = l.covariance_matrix(l.matrix(l.vector(1,2,3),l.vector(1,3,3),l.vector(2,2,3)))
+        # covariances; preset test
+        correct_cov = np.cov(np.array([[1,2,3,3,5,6],[1,3,3,2,6,5],[2,2,3,1,5,5]]))
+        test_cov = l.covariance_matrix(l.matrix(l.vector(1,2,3,3,5,6),l.vector(1,3,3,2,6,5),l.vector(2,2,3,1,5,5)))
         for m,n in list(zip(list(correct_cov.ravel()),[m for m in test_cov.vectors for m in m])):
             self.assertAlmostEqual(m,n)
+
+        # covariances; test image
+        correct_cov = np.array([np.asarray(ImageOps.grayscale(Image.open(
+            "test_data/26_1_1_20170116231925419.jpg.chip.jpg"))).ravel(),
+                                        np.asarray(ImageOps.grayscale(Image.open(
+            "test_data/26_1_2_20170116175920746.jpg.chip.jpg"))).ravel(),
+                                        np.asarray(ImageOps.grayscale(Image.open(
+            "test_data/30_0_0_20170117181207964.jpg.chip.jpg"))).ravel()])
+
+        test_cov = l.matrix(l.image_to_vec('test_data/26_1_1_20170116231925419.jpg.chip.jpg',True),
+                                                l.image_to_vec('test_data/26_1_2_20170116175920746.jpg.chip.jpg',True),
+                                                l.image_to_vec('test_data/30_0_0_20170117181207964.jpg.chip.jpg',True))
+
+        for m,n in list(zip(list(correct_cov.ravel()),[m for m in test_cov.vectors for m in m])):
+            self.assertEqual(abs(m-n) < 2, True)
 
 if __name__ == "__main__":
     unittest.main()
