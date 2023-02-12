@@ -36,7 +36,8 @@ def test_images_to_average_grey():
 
     """
     Outputs average image of the given sample 
-    to data/images. Greyscale. 
+    to data/images. Greyscale. Test function, not relevant
+    to the final project.
     """
 
     files = glob.glob('data/images/*.jpg')
@@ -48,7 +49,14 @@ def test_images_to_average_grey():
     im.save('data/outputs/output.jpg')
 
 def eigenvectors():
-    None
+    sample = glob.glob('data/images/*.jpg')
+    matrix = l.matrix()
+    for f in sample:
+        im = l.image_to_vec(f,grey=True)
+        matrix.append(im)
+    cov_matrix = l.covariance_matrix(matrix)
+    print('Covariance matrix:\n')
+    print(cov_matrix)
 
 def sample_n():
     n = int(input(f"Please input the amount of images you'd like to sample from data/test_data/: "))
@@ -59,19 +67,24 @@ if __name__ == '__main__':
     # n will be the amount of images sampled from address
     sample_n()
 
-    print(f"""Instructions:
-    1: compute the average image from the sample
-    2: compute the eigenvectors for the sample
-    3: get a new sample of n from data/test_data
-    0: quit""")
     while True:
+        print(f"""Instructions:
+        1: compute the average image from the sample (Fun test function; not relevant to final project)
+        2: compute the eigenvectors for the sample
+        3: get a new sample of n from data/test_data
+        0: quit""")
         cmd = int(input("Command:"))
         if cmd == 1:
             test_images_to_average_grey()
+            print('Done, average image: data/outputs/output.jpg')
+            print()
         if cmd == 2:
             eigenvectors()
+            print()
         if cmd == 3:
             sample_n()
+            print('Done')
+            print()
         if cmd == 0:
             break
 
