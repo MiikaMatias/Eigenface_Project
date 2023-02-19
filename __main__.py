@@ -74,15 +74,17 @@ def eigenvectors():
     k_matrix = m(*[vec[1] for vec in k_set]).T
 
     # Project images onto the data
-    print('\nThe following are the weights for each image when projected into the matrix\nof k chosen eigenfaces:')
+    print(f'\nThe following are the weights for each image when projected into the matrix\nof {k} most relevant eigenfaces:')
     weights = m(*[dot(k_matrix, i) for i in normalized_faces]).T
     for i,weight in enumerate(weights):
         print(i+1,':', weight)
 
-    if int(input('Press 1 to see eigenfaces')) == 1:
+    if int(input('Press 1 to see eigenfaces >:^) (face recognition part is still underway but these are fun and creepy so rather show them) \ndo close the popup before pressing a key: ')) == 1:
         for i,eigenface in enumerate(eigenfaces):
             vec_to_image(eigenface).show()
-            input(f'press any key for next one ({i} left)')
+            cmd = input(f'press any key for next one ({k-i} left) ("quit" for quit)')
+            if cmd == 'quit':
+                break
 
 def sample_n():
     n = int(input(f"Please input the amount of images you'd like to sample from data/test_data/: "))
