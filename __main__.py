@@ -82,7 +82,7 @@ def eigenvectors():
     if int(input('Press 1 to see eigenfaces >:^) (face recognition part is still underway but these are fun and creepy so rather show them) \ndo close the popup before pressing a key: ')) == 1:
         for i,eigenface in enumerate(eigenfaces):
             vec_to_image(eigenface).show()
-            cmd = input(f'press any key for next one ({k-i} left) ("quit" for quit)')
+            cmd = input(f'press any key for next one ({len(eigenfaces)-i} left) ("quit" for quit)')
             if cmd == 'quit':
                 break
 
