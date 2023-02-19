@@ -1,3 +1,0 @@
-# Contents
-Within this folder
-    - nothing as of yet; gui code later if applicable

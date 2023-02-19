@@ -4,4 +4,4 @@ Within this folder:
     - images: a random selection of images chosen from test_data (each image can only be picked once)
     - outputs: at this point prints the average of the pictures in images
 
-    - random_sample.py: a script to choose n random files from test_data
+    - random_sample.py: a script to choose n random files from test_data; accessed by main
