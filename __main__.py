@@ -20,7 +20,8 @@ def test_images_to_average_grey():
     """
 
     # Collects files from data
-    sample = glob.glob('data/images/*.jpg')
+    address = 'data/images/*.jpg'
+    sample = glob.glob(address)
     # set up an empty matrix that will be filled with image vectors
     matrix = m()
     for f in sample:
@@ -40,7 +41,9 @@ def eigenvectors():
         im = image_to_vec(f)
         matrix.append(im)
 
-    cov_matrix = matrix.covariance_matrix
+    normalized_faces = matrix.meandeducted
+
+    cov_matrix = normalized_faces.covariance_matrix
     print('Covariance matrix:\n',cov_matrix)
 
     # This function will be replaced with a self-made algorithm
@@ -54,8 +57,32 @@ def eigenvectors():
     for eigenvector in eigenvectors:
         eigenfaces.append(dot(matrix, eigenvector))
     
-    for eigenface in eigenfaces:
-        vec_to_image(eigenface).show()
+    paired_values_faces = []
+    for eigenvalue,eigenface in zip(eigenvalues,eigenfaces):
+        paired_values_faces.append((eigenvalue,eigenface))
+
+    # choose k value
+    while True:
+        try:
+            k = int(input('k value: '))
+            break
+        except:
+            continue
+
+    paired_values_faces.sort(key=lambda x: x[0],reverse=True)
+    k_set = paired_values_faces[:k]
+    k_matrix = m(*[vec[1] for vec in k_set]).T
+
+    # Project images onto the data
+    print('\nThe following are the weights for each image when projected into the matrix\nof k chosen eigenfaces:')
+    weights = m(*[dot(k_matrix, i) for i in normalized_faces]).T
+    for i,weight in enumerate(weights):
+        print(i+1,':', weight)
+
+    if int(input('Press 1 to see eigenfaces')) == 1:
+        for i,eigenface in enumerate(eigenfaces):
+            vec_to_image(eigenface).show()
+            input(f'press any key for next one ({i} left)')
 
 def sample_n():
     n = int(input(f"Please input the amount of images you'd like to sample from data/test_data/: "))
@@ -87,18 +114,18 @@ if __name__ == '__main__':
 
     while True:
         print(f"""Instructions:
-        1: compute the average image from the sample (Fun test function; not directly relevant to final project)
-        2: compute the eigenfaces from the sample
+        1: compute eigenfaces from the function and pick out k most relevant ones (if unsure just make k equal the sample size)
+        2: compute the average image from the sample (Fun test function; not directly relevant to final project)
         3: get a new sample of n from data/test_data 
         4: run tests
         0: quit""")
         cmd = int(input("Command:"))
         if cmd == 1:
-            test_images_to_average_grey()
-            print('Done, average image: data/outputs/output.jpg')
+            eigenvectors()
             print()
         if cmd == 2:
-            eigenvectors()
+            test_images_to_average_grey()
+            print('Done, average image: data/outputs/output.jpg')
             print()
         if cmd == 3:
             sample_n()
