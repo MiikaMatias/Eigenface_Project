@@ -10,10 +10,10 @@ class TestMat(unittest.TestCase):
 
     @classmethod
     def setUp(self):
-        v1 = v(1,1,1)
+        self.v1 = v(1,1,1)
         v2 = v(2,2,2)
         v3 = v(3,3,3)
-        self.m1 = m(v1,v2,v3)
+        self.m1 = m(self.v1,v2,v3)
 
         v4 = v(1,2,3)
         v5 = v(1,2,3)
@@ -30,6 +30,11 @@ class TestMat(unittest.TestCase):
             v(2,2,2),
             v(3,3,3),
             v(4,4,4)))
+        self.assertEqual(self.m1 + self.v1, m(
+        v(2,2,2),
+        v(3,3,3),
+        v(4,4,4) 
+        ))
 
     def test_subtract(self):
         self.assertEqual(self.m1-self.m2, m(
@@ -40,6 +45,11 @@ class TestMat(unittest.TestCase):
             v(0,0,0),
             v(1,1,1),
             v(2,2,2)))
+        self.assertEqual(self.m1 - self.v1, m(
+        v(0,0,0),
+        v(1,1,1),
+        v(2,2,2) 
+        ))
 
     def test_multiply(self):
         self.assertEqual(self.m1*self.m2, m(

@@ -93,6 +93,11 @@ class matrix_datastructure:
             for i in range(len(self.vectors)):
                 retmatrix.append(vector(*(self.vectors[i]+__o.vectors[i])))
             return retmatrix
+        elif isinstance(__o, vector):
+            retmatrix = matrix_datastructure()
+            for i in range(len(self.vectors)):
+                retmatrix.append(vector(*(self.vectors[i]+__o)))
+            return retmatrix
         elif isinstance(__o, (int,float)):
             retmatrix = matrix_datastructure()
             for i in range(len(self.vectors)):
@@ -106,6 +111,11 @@ class matrix_datastructure:
             retmatrix = matrix_datastructure()
             for i in range(len(self.vectors)):
                 retmatrix.append(vector(*(self.vectors[i]-__o.vectors[i])))
+            return retmatrix
+        elif isinstance(__o, vector):
+            retmatrix = matrix_datastructure()
+            for i in range(len(self.vectors)):
+                retmatrix.append(vector(*(self.vectors[i]-__o)))
             return retmatrix
         elif isinstance(__o, (int,float)):
             retmatrix = matrix_datastructure()

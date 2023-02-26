@@ -30,6 +30,9 @@ class TestOp(unittest.TestCase):
         m1 = m(v(2,2,2),v(2,2,2),v(2,2,2))
         self.assertEqual(dot(m1,v1),v(12,12,12))
 
+        m2 = m(v(1,2,3),v(1,2,3),v(1,2,3))
+        self.assertEqual(dot(m1,m2), m(v(6,12,18),v(6,12,18),v(6,12,18)))
+
     def test_meanvector(self):
         from src.operations import meanvector
         v1 = v(1,2,3)
@@ -37,6 +40,11 @@ class TestOp(unittest.TestCase):
         v3 = v(1,2,3)
         m1 = m(v1,v2,v3)
         self.assertEqual(meanvector(m1),v1)
+
+    def test_get_k(self):
+        from src.operations import get_k
+        self.assertEqual(get_k([2,3,1,3,2,4], 0.9),5)
+
 
 if __name__ == '__main__':  
     unittest.main()

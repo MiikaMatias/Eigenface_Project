@@ -5,7 +5,7 @@ import os
 from PIL import Image
 from src.vector import vector as v
 from src.matrix import matrix_datastructure as m
-from src.operations import image_to_vec, vec_to_image, dot
+from src.operations import image_to_vec, vec_to_image, dot, get_k
 
 """
 Computes average images or eigenvectors of images
@@ -34,6 +34,16 @@ def test_images_to_average_grey():
     im.show()
 
 def eigenvectors():
+
+    # remove redundant files
+    eigenfaces_to_remove = glob.glob('data/outputs/eigenfaces/*.jpg')
+    for e in eigenfaces_to_remove:
+        os.remove(e)
+
+    reconstructions_to_remove = glob.glob('data/outputs/reconstructions/*.jpg')
+    for r in reconstructions_to_remove:
+        os.remove(r)
+
     sample = glob.glob('data/images/*.jpg')
     matrix = m()
     
@@ -43,48 +53,56 @@ def eigenvectors():
 
     normalized_faces = matrix.meandeducted
 
-    cov_matrix = normalized_faces.covariance_matrix
+    cov_matrix = normalized_faces.covariance_matrix/len(sample)
     print('Covariance matrix:\n',cov_matrix)
-
-    # This function will be replaced with a self-made algorithm
     
     eigenvalues, eigenvectors, = np.linalg.eig(np.array([arr for arr in cov_matrix]))
 
-    eigenvectors = [v(*list(eigenvector)) for eigenvector in eigenvectors]
+    zipped_eigenvectors = zip(eigenvalues,[v(*list(ev)) for ev in eigenvectors],matrix.vectors)
     print('Eigenvectors:\n',eigenvectors)
 
-    eigenfaces = []
-    for eigenvector in eigenvectors:
-        eigenfaces.append(dot(matrix, eigenvector))
+    sorted_by_eigenvalues = sorted(zipped_eigenvectors, key = lambda x: x[0],reverse=True)
+    sorted_by_eigenvalues = sorted_by_eigenvalues
+
+    # Now we have most prominent eigenvectors, let's separate them
+
+    sorted_eigenvectors = [s[1] for s in sorted_by_eigenvalues]
+    sorted_eigenvalues = [s[0] for s in sorted_by_eigenvalues]
+    sorted_images = [s[2] for s in sorted_by_eigenvalues]
+    for i,vector in enumerate(sorted_images):
+        vec_to_image(vector).save(f'data/outputs/sorted_images/{i}.jpg')
+
+    k = get_k(sorted_eigenvalues,input('Give a variance treshold between 0-1: '))
+    sorted_eigenvectors = sorted_eigenvectors[:k]
+    # Form a matrix by relevance
+    eigenmatrix = dot(matrix.T,m(*sorted_eigenvectors)).T
+    for i,eigenface in enumerate(eigenmatrix):
+        vec_to_image(eigenface).save(f'data/outputs/eigenfaces/eigenface_{i}.jpg')
+
+    weights = m(*[dot(eigenmatrix.T, normalized_face) for normalized_face in normalized_faces])
     
-    paired_values_faces = []
-    for eigenvalue,eigenface in zip(eigenvalues,eigenfaces):
-        paired_values_faces.append((eigenvalue,eigenface))
+    print('\n','weights:')
+    for i,w in enumerate(weights):
+        print(i+1,w)
 
-    # choose k value
-    while True:
-        try:
-            k = int(input('k value: '))
-            break
-        except:
-            continue
+    # we recognize new images now
 
-    paired_values_faces.sort(key=lambda x: x[0],reverse=True)
-    k_set = paired_values_faces[:k]
-    k_matrix = m(*[vec[1] for vec in k_set]).T
+    new_images = sorted(glob.glob('data/unknown_images/*.jpg'))
+    respective_distances = []
 
-    # Project images onto the data
-    print(f'\nThe following are the weights for each image when projected into the matrix\nof {k} most relevant eigenfaces:')
-    weights = m(*[dot(k_matrix, i) for i in normalized_faces]).T
-    for i,weight in enumerate(weights):
-        print(i+1,':', weight)
+    mean = matrix.mean_vec
+    
+    for i in range(len(new_images)):
+        testfor = image_to_vec(new_images[i])
+        normalized = testfor - mean
+        new_weights = dot(eigenmatrix.T, normalized)
+        euclidean_distance = weights - new_weights
+        smallest_dist = min([(j,vec.mag,new_images[i]) for j,vec in enumerate(euclidean_distance)],key=lambda x: x[1])
+        # convert to scientific notation
+        respective_distances.append((smallest_dist[0],f'{smallest_dist[1]:e}',smallest_dist[2]))
 
-    if int(input('Press 1 to see eigenfaces >:^) (face recognition part is still underway but these are fun and creepy so rather show them) \ndo close the popup before pressing a key: ')) == 1:
-        for i,eigenface in enumerate(eigenfaces):
-            vec_to_image(eigenface).show()
-            cmd = input(f'press any key for next one ({len(eigenfaces)-i} left) ("quit" for quit)')
-            if cmd == 'quit':
-                break
+    print(*respective_distances,sep='\n')
+
 
 def sample_n():
     n = int(input(f"Please input the amount of images you'd like to sample from data/test_data/: "))
@@ -107,8 +125,6 @@ def run_tests():
     print()
 
 
-
-
 if __name__ == '__main__':
     # Note that running the program removes all prior files from the address
     # n will be the amount of images sampled from address
@@ -116,7 +132,7 @@ if __name__ == '__main__':
 
     while True:
         print(f"""Instructions:
-        1: compute eigenfaces from the function and pick out k most relevant ones (if unsure just make k equal the sample size)
+        1: Try to recognize faces from 'data/unknown_images/' with treshold variance
         2: compute the average image from the sample (Fun test function; not directly relevant to final project)
         3: get a new sample of n from data/test_data 
         4: run tests
