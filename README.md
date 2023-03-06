@@ -10,3 +10,4 @@ succeeded at this.
 3) [Testing document](todo, right now all tests are approximately 90%)
 4) [Weekly reports](https://github.com/MiikaMatias/Eigenface_Project/blob/main/docs/Weekly%20reports.pdf)
 5) [Implementation document](todo, will finish shortly)
+

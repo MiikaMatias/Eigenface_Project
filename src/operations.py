@@ -5,19 +5,28 @@ import os
 import time
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+
+"""Contains operations that are better as external functions than internal to any specific datastructure."""
+
+
 def get_k(eigenvalues, t):
+
+    """Get the necessary k amount of eigenvectors based on a variance
+    treshold t, where t is in range [0-1]."""
+
     if float(t) > 1:
         raise ValueError('treshold must be smaller than 1')
     treshold = float(t)
 
     sum_l = 0
     sum_e = sum(eigenvalues)
-    print(f'searching minimum amount required to explain {treshold*100}% of variance between images...')
+    print(f'\nsearching minimum amount required to explain {treshold*100}% of variance between images...')
     for i,lambda_value in enumerate(eigenvalues):
         sum_l += lambda_value
         var = sum_l/sum_e
         print('\r' + f'{var} explained at {i}',sep='')
-        time.sleep(0.15)
+        # For coolness :-D
+        time.sleep(0.015)
         if var > treshold:
             print('picked',i,f'eigenvectors out of {len(eigenvalues)}...')
             return i
@@ -59,6 +68,8 @@ def vec_to_image(vec):
     return im
 
 def dot(arg1, arg2):
+    """ Take the dot product of two matrices/vectors
+    """
     from src.matrix import matrix_datastructure as m
 
     if isinstance(arg1, v) and isinstance(arg2,v):
@@ -77,7 +88,6 @@ def dot(arg1, arg2):
             for i,vector_2 in enumerate(arg2):
                 vec.append(dot(vector_1,vector_2))
             ret.append(vec)
-        print("\r" + f"{j}/{len(arg1)}", end='')
         return ret
     raise TypeError(f'{type(arg1)} and {type(arg2)} are inappropriately typed')
 

@@ -95,11 +95,11 @@ class TestMat(unittest.TestCase):
 
 
     def test_covariance_matrix(self):
-        images = ['test_data/26_0_1_20170117200127227.jpg.chip.jpg',
-                  'test_data/26_1_1_20170116231925419.jpg.chip.jpg',
-                  'test_data/26_1_2_20170116175920746.jpg.chip.jpg',
-                  'test_data/29_0_0_20170104201134466.jpg.chip.jpg',
-                  'test_data/30_0_0_20170117181207964.jpg.chip.jpg']
+        images = ['test_images/26_0_1_20170117200127227.jpg.chip.jpg',
+                  'test_images/26_1_1_20170116231925419.jpg.chip.jpg',
+                  'test_images/26_1_2_20170116175920746.jpg.chip.jpg',
+                  'test_images/29_0_0_20170104201134466.jpg.chip.jpg',
+                  'test_images/30_0_0_20170117181207964.jpg.chip.jpg']
         matrix = m(*[image_to_vec(im) for im in images])
         test_cov = matrix.covariance_matrix
         correct_cov = np.cov(np.array([vector.values for vector in matrix]))
