@@ -4,8 +4,13 @@
 3) if all dependencies are sorted, `run poetry run python main.py`
 
 # How to use
-1) The program will initially ask you for a sample. The maximum sample is whatever the amount of images in `data/test_data` happens to be. By default there are a 30 yaleface images, so the maximum amount of sample images is 30. 
-2) Now you have inserted the sample you want, and can run the main program by pressing `1`. This will start a more or less lengthy calculation that ends at a comparison between images in `test_data` and images in `unknown images`
-3) You can also see the eigenfaces in `data/outputs/eigenfaces`
+0) The program will run tests! If these are passed, the command prompt will clear and execution starts. 
+1) The program will initially ask you for a sample. Input a number between the given intervals. The number signifies the amount of images sample _from each subject_.
+2) input ´1´ in order to start the configuration process
+3) Press ´y´ unless you want to run the model on random data from ´data/test_data´; in this case give the parameters for ´operations.train_test_split´
+4) Choose if you'd like to remove eigenvectors. If it is your first time, choose ´n´, but if you want to see the effects of doing so after trying to run the model once, try a number between 1 and 3 (1 recommended for standard data)
+5) Input a parameter for variance. Generally ´0.95' is good. 
+6) Choose if you want to save intermediary images into respective folders.
+7) Now the model runs!
 
-Ideally you'll run this program in an IDE, as that gives you the best vantage point between different folders.
+Ideally you'll run this program in an IDE like Visual Studio Code, as that gives you the best vantage point between different folders.
