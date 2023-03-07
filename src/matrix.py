@@ -162,9 +162,9 @@ class matrix_datastructure:
         for i in range(len(self.vectors[0])):
             for vector in self.vectors:
                 if isinstance(vector[i], (int,float)):
-                    ret_str += f"{vector[i]:.3f}\t"
+                    ret_str += f"{vector[i]:.3f} \t"
                 else:
-                    ret_str += f"{vector[i]}\t"
+                    ret_str += f"{vector[i]} \t"
             ret_str += '\n'
         return ret_str
 

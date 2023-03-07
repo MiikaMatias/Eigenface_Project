@@ -31,7 +31,7 @@ def test_images_to_average_grey():
     mean_vector = matrix.mean_vec
 
     im = vec_to_image(mean_vector)
-    im.save('data/outputs/output.jpg')
+    im.save('data/outputs/average.jpg')
     im.show()
 
 def eigenvectors():
@@ -102,6 +102,7 @@ def eigenvectors():
     normalized_faces = matrix.meandeducted
 
     cov_matrix = normalized_faces.covariance_matrix/len(sample)
+    print('Covariance matrix: \n',cov_matrix)
     print('\nNext we use numpy to calculate eigenvectors for the covariance matrix...')        
     eigenvalues, eigenvectors, = np.linalg.eig(np.array([arr for arr in cov_matrix]))
 

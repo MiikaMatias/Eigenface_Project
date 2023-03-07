@@ -19,10 +19,12 @@ def get_k(eigenvalues, t):
     treshold = float(t)
 
     sum_l = 0
+    vals = []
     sum_e = sum(eigenvalues)
     print(f'\nsearching minimum amount required to explain {treshold*100}% of variance between images...')
     for i,lambda_value in enumerate(eigenvalues):
         sum_l += lambda_value
+        vals.append(lambda_value)
         var = sum_l/sum_e
         print('\r' + f'{var} explained at {i}',sep='')
         # For coolness :-D

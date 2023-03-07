@@ -18,8 +18,7 @@ class TestOp(unittest.TestCase):
             'test_images/26_0_1_20170117200127227.jpg.chip.jpg')
         np_version = np.asarray(Image.open('test_images/26_0_1_20170117200127227.jpg.chip.jpg').convert('L')).ravel()
         for i in range(len(my_version)):
-            self.assertEqual(abs(my_version[i]-np_version[i]) < 2, True)
-        vec_to_image(my_version)
+            self.assertEqual(abs(my_version[i]-np_version[i]) < 2, True)        
 
     def test_dot(self):
         from src.operations import dot
@@ -40,6 +39,7 @@ class TestOp(unittest.TestCase):
         v3 = v(1,2,3)
         m1 = m(v1,v2,v3)
         self.assertEqual(meanvector(m1),v1)
+        self.assertEqual(meanvector(m()),[])
 
     def test_get_k(self):
         from src.operations import get_k
