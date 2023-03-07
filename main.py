@@ -49,6 +49,7 @@ def eigenvectors():
     # Now we configure the model –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
     
     # use standard data or sample randomly
+
     print('We can either use standard data, or sample randomly from test_data')
     if input('Would you like to use standard data? (y/n):') != 'n':
         X_train = [[x] for x in sorted(glob.glob('data/train_standard/*.jpg'))]
@@ -62,6 +63,7 @@ def eigenvectors():
         X_train,X_test,y_train,y_test = rand.train_test_split(float(sample_percentage))
     
     # Potentially mitigate lighting by removing some eigenvectors 
+
     print('\n If we want, we can remove some eigenvectors (1-3).')
     print('The primary reason for doing this is mitigating the effects of light in recognition.')
     remove_vectors = input('would you like to remove eigenvectors (y|n):')
@@ -70,6 +72,7 @@ def eigenvectors():
         how_many_to_remove = int(input('how many: '))
 
     # Set the parameter for PCA
+
     print('\nNow need parameter € for PCA; \n recommended 0.8 for performance, 0.95 for accuracy')
     variance_treshold = float(input('Give a variance treshold between 0-1: '))
 
@@ -79,6 +82,7 @@ def eigenvectors():
     # Configuration over, start calculations –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– 
 
     # Form matrix from the images
+
     sample = [im for im in X_train for im in im]
 
     print('We use the following images for training:')
@@ -108,6 +112,7 @@ def eigenvectors():
     sorted_by_eigenvalues = sorted(zipped_eigenvectors, key = lambda x: x[0],reverse=True)
 
     # Now we have most prominent eigenvectors, let's separate them
+
     print('\nSorting the vectors...')
 
     sorted_eigenvalues = [s[0] for s in sorted_by_eigenvalues]
@@ -132,7 +137,8 @@ def eigenvectors():
     eigenmatrix = dot(matrix.T,m(*sorted_eigenvectors)).T
     eigenmatrix.vectors = eigenmatrix.vectors[how_many_to_remove:]
 
-    # Save eigenfaces
+    # Save eigenfaces if applicable
+
     if save_eigen:
         for i,eigenface in enumerate(eigenmatrix):
             vec_to_image(eigenface).save(f'data/outputs/eigenfaces/eigenface_{i}.jpg')
@@ -141,7 +147,8 @@ def eigenvectors():
     print('\n Deriving weights for each image by projecting it into the eigenmatrix...')
 
     weights = m(*[dot(eigenmatrix.T, normalized_face) for normalized_face in normalized_faces])
-    
+
+    # Calculations for the model are complete ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
     # we can recognize new images now
 
@@ -149,13 +156,11 @@ def eigenvectors():
 
     new_images = X_test + sorted(glob.glob('data/unknown_images/*.jpg'))
     i = 0
-    while len(y_test) != len(new_images):
-        y_test.append('not_a_face') 
-        i+=1
+    y_test += ['new_face','new_face','not_a_face','not_a_face']
     respective_distances = []
 
     mean = matrix.mean_vec
-    
+
     print('\nWe start recognizing images...')
     for i in range(len(new_images)):
         testfor = image_to_vec(new_images[i])
@@ -172,15 +177,17 @@ def eigenvectors():
         rough_val = distance[1].split('e+')
         distance_from_origin = float(rough_val[0])*(10**int(rough_val[1]))
         # this distance treshold of 1.5e+08 was chosen with pure, raw emotion
-        if distance_from_origin > (2*(10**8)):
+        if distance_from_origin > (2.5*(10**8)):
             distance = ('not_a_face',distance[1],distance[2])
+        elif distance_from_origin > (1.6*(10**8)):
+            distance = ('new_face',distance[1],distance[2])
         print(distance,'correct' if distance[0] == y_test[i] else 'incorrect')
         if distance[0] == y_test[i]:
             correct += 1
     print(f'The model succeeded {correct/len(respective_distances)*100:.3f}% of the time')
-    print(f'eigenfaces used: {len(eigenmatrix)}')
+    print(f'eigenfaces used: {len(eigenmatrix.vectors)}')
     print('Results may get better or worse depending on parameters you have given, and the sample size used!')
-
+    
 
 def sample_n():
     """Take a sample from test data."""
