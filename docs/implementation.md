@@ -45,6 +45,9 @@ Let's call this list _W_. In order to recognize any image _w_ in _W_, we deduct 
 all of the distances, and take the smallest one. This will be our guess. If the distance is above a certain treshold, we judge that the image is not known. If it is
 further still, we judge that it is not a face at all!
 
+## Time complexity
+This being an algorithms project, I'm going to give a rough approximation of the time complexity of the most important parts of the algorithm.
+
 ## Improvement ideas
 Being able to save a model would be a great improvement to the algorithm. More advanced train_test_split function that the user can give specifications to 
 would be great too. Even upgrading the model to an implementation of `fisherface` would be neat, since this model gets fooled by lighting really easily. There's a million ways to go.
