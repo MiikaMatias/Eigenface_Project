@@ -6,8 +6,7 @@ succeeded at this.
 
 # Documents and relevant information:
 1) [How to use the program](https://github.com/MiikaMatias/Eigenface_Project/blob/main/docs/how_to.md)
-2) [Specification document](https://github.com/MiikaMatias/Eigenface_Project/blob/main/docs/Definition.pdf)
+2) [Implementation document](https://github.com/MiikaMatias/Eigenface_Project/blob/main/docs/implementation.md)
 3) [Testing document](https://github.com/MiikaMatias/Eigenface_Project/blob/main/docs/coverage.md)
 4) [Weekly reports](https://github.com/MiikaMatias/Eigenface_Project/blob/main/docs/Weekly%20reports.pdf)
-5) [Implementation document](todo, will finish shortly)
-
+5) [Specification document](https://github.com/MiikaMatias/Eigenface_Project/blob/main/docs/Definition.pdf)
