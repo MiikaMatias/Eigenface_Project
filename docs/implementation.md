@@ -46,7 +46,21 @@ all of the distances, and take the smallest one. This will be our guess. If the 
 further still, we judge that it is not a face at all!
 
 ## Time complexity
-This being an algorithms project, I'm going to give a rough approximation of the time complexity of the most important parts of the algorithm.
+This being an algorithms project, I'm going to give a rough approximation of the time complexity of the most important parts of the algorithm. However, this analysis is very rudimentary as the nature of the algorithm is quite complex, and in my view it's more important to gain a high percentage of accuracy than speed:
+
+### Vector Operations
+`add`, `sub`, `mul`, `div`, `mag`,`ssq`,`mean` are all time complexity of O(N)
+
+### Matrix Operations
+N: The columns of the vectors
+M: The rows of the vectors
+`T`,`covariance_matrix` is time complexity O(NM)
+`flattened` is time complexity O(N) 
+`eigenvalue decomposition` [numpy]: O(M^3)
+
+### PCA 
+O(NM + M^3)
+
 
 ## Improvement ideas
 Being able to save a model would be a great improvement to the algorithm. More advanced train_test_split function that the user can give specifications to 
