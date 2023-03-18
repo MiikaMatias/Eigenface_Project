@@ -1,7 +1,7 @@
 # How to get started
 1) Pull the project and make sure you have `poetry` installed
 2) run `poetry install` in root
-3) if all dependencies are sorted, `run poetry run python main.py`
+3) if all dependencies are sorted, run `poetry run python main.py`
 
 # How to use
 0) The program will run tests! If these are passed, the command prompt will clear and execution starts. 
