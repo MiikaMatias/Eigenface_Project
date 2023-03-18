@@ -15,8 +15,8 @@ class TestOp(unittest.TestCase):
     def test_image_to_vec(self):
         from src.operations import image_to_vec, vec_to_image
         my_version = image_to_vec(
-            'test_images/26_0_1_20170117200127227.jpg.chip.jpg')
-        np_version = np.asarray(Image.open('test_images/26_0_1_20170117200127227.jpg.chip.jpg').convert('L')).ravel()
+            'src/test_images/26_0_1_20170117200127227.jpg.chip.jpg')
+        np_version = np.asarray(Image.open('src/test_images/26_0_1_20170117200127227.jpg.chip.jpg').convert('L')).ravel()
         for i in range(len(my_version)):
             self.assertEqual(abs(my_version[i]-np_version[i]) < 2, True)        
 

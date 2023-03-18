@@ -173,6 +173,9 @@ def eigenvectors():
         respective_distances.append((smallest_dist[0],f'{smallest_dist[1]:e}',smallest_dist[2]))
 
     correct = 0
+    print()
+    print('How to read: (predicted subject, distance in the image space, original image) correct|incorrect')
+    print()
     print('The following are the predictions made by the model:')
     for i,distance in enumerate(respective_distances):
         rough_val = distance[1].split('e+')
@@ -216,13 +219,15 @@ def run_tests():
 if __name__ == '__main__':
     # Note that running the program removes all prior files from the address
     # n will be the amount of images sampled from address
+    run_tests()
+    os.system('cls' if os.name == 'nt' else 'clear')
     sample_n()
 
     while True:
         print(f"""Instructions:
-        1: Try to recognize faces from 'data/unknown_images/' with treshold variance
-        2: compute the average image from the sample (Fun test function; not directly relevant to final project)
-        3: get a new sample of n from data/test_data 
+        1: Try to recognize faces from 'data/unknown_images/'
+        2: compute the average image from the sample into 'data/outputs/' as 'average.jpg'
+        3: get a new sample from data/test_data 
         4: run tests
         0: quit""")
         cmd = int(input("Command:"))
@@ -242,7 +247,7 @@ if __name__ == '__main__':
         if cmd == 0:
             break
         else:
-            None
+            print('\nWeird command detected. Retry.\n')
 
     print('Done')
 

@@ -46,10 +46,6 @@ class matrix_datastructure:
         return ret
     
     @property
-    def eigen(self):
-        None
-    
-    @property
     def covariance_matrix(self):
         """Returns the covariance matrix of this matrix"""
 
